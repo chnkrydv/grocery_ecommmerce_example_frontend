@@ -1,4 +1,4 @@
-const api = 'http:localhost:9999';
-const allProductsUrl = `${api}/products`;
+const remote = 'http://localhost:9999';
+const allProductsUrl = `${remote}/api/products`;
 
 export {allProductsUrl};

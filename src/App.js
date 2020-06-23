@@ -19,8 +19,8 @@ class App extends Component {
   }
 
   componentDidMount(){
-    getProductsList((products) => this.setState({
-      products: products,
+    getProductsList((productCatalog) => this.setState({
+      products: Object.keys(productCatalog),
       loading: false,
     }));
   }

@@ -1,7 +1,14 @@
 import {allProductsUrl} from './config';
 
 function getProductsList(callback, err){
-  fetch(allProductsUrl).then(list => callback([1,2,3,4,5,6])).catch(err)
+  console.log(allProductsUrl);
+  fetch(allProductsUrl)
+  .then(res => res.json())
+  .then(catalog => {
+    console.log(catalog);
+    callback(catalog);
+  })
+  .catch(err)
 }
 
 export { getProductsList };
