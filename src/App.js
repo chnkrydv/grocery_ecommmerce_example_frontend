@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import { HomePage } from './components/HomePage';
+import { getGroceriesList } from './api/requests';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: true,
+      groceries: [],
+    }
+  }
+
+  componentDidMount(){
+    getGroceriesList((groceries) => this.setState({
+      groceries,
+      loading: false,
+    }));
+  }
+
+  render() {
+    const { loading , groceries } = this.state;
+    return (
+      <div className="App">
+        {loading ? <div>loading...</div> : <HomePage groceries={groceries} />}
+      </div>
+    );
+  }
 }
 
 export default App;
