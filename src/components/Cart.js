@@ -20,7 +20,7 @@ export class Cart extends Component {
   render() {
     const { cartOpen, onTapOutside, onClear, onAdd } = this.props;
     return (
-      <Modal cartOpen={cartOpen} onTapOutside={onTapOutside}>
+      <Modal open={cartOpen} onTapOutside={onTapOutside}>
         {
           this.state.page === 0
           ? <CartItemsList closeModal={onTapOutside} onClear={onTapOutside} onNext={() => this.scroll(true)}/>

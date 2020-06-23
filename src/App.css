@@ -1,11 +1,16 @@
 body{
   max-width: 1080px;
   margin: 0 auto;
+  box-shadow: 0px 0px 15px 5px #ccc;
 }
 
 .App {
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.app_container{
+  padding: 40px;
 }
 
 .hidden{
@@ -21,10 +26,17 @@ body{
 .header{
   background-color: cornflowerblue;
   color: white;
-  height: 60px;
+  height: 40px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-content: space-between;
+  line-height: 40px;
+  padding: 20px 40px;
+}
+
+.header_content{
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .modal{
@@ -33,7 +45,7 @@ body{
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal_container{
@@ -43,13 +55,52 @@ body{
   transform: translate(-50%, -50%);
   opacity: 1.0;
   background-color: white;
-  padding: 20px;
+  min-height: 600px;
+  min-width: 500px;
 }
 
 .cart_button{
   background-color: white;
   color: black;
   height: 40px;
-  width: 120px;
+  padding-left: 16px;
+  padding-right: 16px;
   cursor: pointer;
+  box-shadow: 2px 2px 15px 5px rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+}
+
+.product_categories{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
+}
+
+.category_card{
+  height: 150px;
+  width: 200px;
+  align-self: center;
+  justify-self: center;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 15px 5px #ccc;
+  cursor: pointer;
+}
+
+.category_card_text{
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  padding: 5px;
+  font-weight: bold;
+  font-size: 20px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+.grid_left{
+  justify-self: left;
+}
+
+.grid_right{
+  justify-self: right;
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { HomePage } from './components/HomePage';
+import { ProductCategories } from './components/ProductCategories';
 import { getProductsList } from './api/requests';
 import { Header } from './components/Header';
 import CartButton from './components/CartButton';
@@ -13,33 +13,40 @@ class App extends Component {
     this.state = {
       loading: true,
       cartOpen: false,
-      products: [],
+      productsCatalog: {},
       productsInCart: []
     }
   }
 
-  componentDidMount(){
-    getProductsList((productCatalog) => this.setState({
-      products: Object.keys(productCatalog),
-      loading: false,
-    }));
+  componentDidMount() {
+    getProductsList((productsCatalog) => {
+      console.log('this is catalog', productsCatalog);
+      this.setState({
+        productsCatalog: productsCatalog,
+        loading: false,
+      })
+    });
   }
 
   toggleCartPanel = () => {
     console.log('something hppnd')
     const updatedOpenState = !this.state.cartOpen;
-    this.setState({cartOpen: updatedOpenState});
+    this.setState({ cartOpen: updatedOpenState });
   }
 
   render() {
-    const { loading , products, productsInCart, cartOpen } = this.state;
+    const { loading, productsCatalog, productsInCart, cartOpen } = this.state;
     return (
       <div className="App">
-        <Cart cartOpen={cartOpen} onTapOutside={this.toggleCartPanel}/>
-        <Header header="Grocery Items">
-          <CartButton count={productsInCart.length} openCart={this.toggleCartPanel}/>
+        <Header header="GROCERY MART">
+          <CartButton count={productsInCart.length + 12} openCart={this.toggleCartPanel} />
         </Header>
-        {loading ? <div>loading...</div> : <HomePage products={products} />}
+        <div className="app_container">
+          {loading
+            ? <div>loading...</div>
+            : <ProductCategories productsCatalog={productsCatalog} />}
+        </div>
+        <Cart cartOpen={cartOpen} onTapOutside={this.toggleCartPanel} />
       </div>
     );
   }
