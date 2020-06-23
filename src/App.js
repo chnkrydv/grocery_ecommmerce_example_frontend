@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import { HomePage } from './components/HomePage';
-import { getGroceriesList } from './api/requests';
+import { getProductsList } from './api/requests';
 import { Header } from './components/Header';
 import CartButton from './components/CartButton';
-import Modal from './components/Modal';
+import Cart from './components/Cart';
 
 class App extends Component {
   constructor(props) {
@@ -13,13 +13,14 @@ class App extends Component {
     this.state = {
       loading: true,
       cartOpen: false,
-      groceries: [],
+      products: [],
+      productsInCart: []
     }
   }
 
   componentDidMount(){
-    getGroceriesList((groceries) => this.setState({
-      groceries,
+    getProductsList((products) => this.setState({
+      products: products,
       loading: false,
     }));
   }
@@ -31,14 +32,14 @@ class App extends Component {
   }
 
   render() {
-    const { loading , groceries, cartOpen } = this.state;
+    const { loading , products, productsInCart, cartOpen } = this.state;
     return (
       <div className="App">
-        <Modal cartOpen={cartOpen} onTapOutside={this.toggleCartPanel}>some child</Modal>
+        <Cart cartOpen={cartOpen} onTapOutside={this.toggleCartPanel}/>
         <Header header="Grocery Items">
-          <CartButton count={cartOpen} openCart={this.toggleCartPanel}/>
+          <CartButton count={productsInCart.length} openCart={this.toggleCartPanel}/>
         </Header>
-        {loading ? <div>loading...</div> : <HomePage groceries={groceries} />}
+        {loading ? <div>loading...</div> : <HomePage products={products} />}
       </div>
     );
   }
