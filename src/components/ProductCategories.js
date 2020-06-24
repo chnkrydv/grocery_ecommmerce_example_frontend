@@ -2,13 +2,14 @@ import React from 'react'
 import CategoryCard from './CategoryCard';
 import { api } from '../api/config';
 
-export const ProductCategories = ({ productsCatalog }) => (
+export const ProductCategories = ({ categories }) => (
   <div className="product_categories">
-    {Object.keys(productsCatalog).map((item, i) => (
+    {Object.keys(categories).map((item, i) => (
       <CategoryCard
         className={`${i%2 === 1 ? 'grid_left' : 'grid_right'}`}
-        name={item}
-        imgSrc={`${api}${productsCatalog[item]['imageSrc']}`}
+        name={categories[item]['name']}
+        totalProducts={categories[item]['products']}
+        imageSource={`${api}${categories[item]['imageSource']}`}
       />
     ))}
   </div>

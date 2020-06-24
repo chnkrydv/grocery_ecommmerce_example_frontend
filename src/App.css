@@ -1,12 +1,14 @@
 body{
   max-width: 1080px;
   margin: 0 auto;
-  box-shadow: 0px 0px 15px 5px #ccc;
+  box-shadow: 0px 0px 15px 5px #ddd;
+  background-color: #f4f4f4;
 }
 
 .App {
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
+  background-color: white;
 }
 
 .app_container{
@@ -35,7 +37,7 @@ body{
 }
 
 .header_content{
-  font-size: 18px;
+  font-size: 30px;
   font-weight: bold;
 }
 
@@ -78,7 +80,7 @@ body{
 
 .category_card{
   height: 150px;
-  width: 200px;
+  width: 250px;
   align-self: center;
   justify-self: center;
   margin: 20px;
@@ -90,11 +92,13 @@ body{
 .category_card_text{
   background-color: rgba(0, 0, 0, 0.4);
   color: white;
-  padding: 5px;
+  padding: 5px 15px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .grid_left{

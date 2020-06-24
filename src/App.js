@@ -13,16 +13,16 @@ class App extends Component {
     this.state = {
       loading: true,
       cartOpen: false,
-      productsCatalog: {},
+      productCategories: {},
       productsInCart: []
     }
   }
 
   componentDidMount() {
-    getProductsList((productsCatalog) => {
-      console.log('this is catalog', productsCatalog);
+    getProductsList((productCategories) => {
+      console.log('this is catalog', productCategories);
       this.setState({
-        productsCatalog: productsCatalog,
+        productCategories: productCategories,
         loading: false,
       })
     });
@@ -35,16 +35,16 @@ class App extends Component {
   }
 
   render() {
-    const { loading, productsCatalog, productsInCart, cartOpen } = this.state;
+    const { loading, productCategories, productsInCart, cartOpen } = this.state;
     return (
       <div className="App">
-        <Header header="GROCERY MART">
+        <Header header="Groceries Mart">
           <CartButton count={productsInCart.length + 12} openCart={this.toggleCartPanel} />
         </Header>
         <div className="app_container">
           {loading
             ? <div>loading...</div>
-            : <ProductCategories productsCatalog={productsCatalog} />}
+            : <ProductCategories categories={productCategories} />}
         </div>
         <Cart cartOpen={cartOpen} onTapOutside={this.toggleCartPanel} />
       </div>
