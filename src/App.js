@@ -5,6 +5,9 @@ import { getProductsList } from './api/requests';
 import { Header } from './components/Header';
 import CartButton from './components/CartButton';
 import Cart from './components/Cart';
+import IfElse from './components/IfElse';
+import Profile from './components/Profile';
+import AuthPage from './components/AuthPage';
 
 class App extends Component {
   constructor(props) {
@@ -13,6 +16,8 @@ class App extends Component {
     this.state = {
       loading: true,
       cartOpen: false,
+      authPageOpen: false,
+      profile: {},
       productCategories: {},
       productsInCart: []
     }
@@ -28,25 +33,48 @@ class App extends Component {
     });
   }
 
-  toggleCartPanel = () => {
-    console.log('something hppnd')
+  toggleCartVisibility = () => {
     const updatedOpenState = !this.state.cartOpen;
     this.setState({ cartOpen: updatedOpenState });
   }
 
+  toggleAuthPageVisibility = () => {
+    const updatedOpenState = !this.state.authPageOpen;
+    this.setState({ authPageOpen: updatedOpenState });
+  }
+
   render() {
-    const { loading, productCategories, productsInCart, cartOpen } = this.state;
+    const { loading, productCategories, productsInCart, cartOpen, authPageOpen, profile } = this.state;
     return (
       <div className="App">
         <Header header="Groceries Mart">
-          <CartButton count={productsInCart.length + 12} openCart={this.toggleCartPanel} />
+          <div className="header_children grid_right">
+            <CartButton count={productsInCart.length} openCart={this.toggleCartVisibility} />
+            <Profile
+              className="grid_right"
+              openAuthPage={this.toggleAuthPageVisibility}
+              name={profile.name}
+            />
+          </div>
         </Header>
         <div className="app_container">
-          {loading
-            ? <div>loading...</div>
-            : <ProductCategories categories={productCategories} />}
+          <h2>Categories</h2>
+          <IfElse
+            condition={loading}
+            ifComponent={<div>loading...</div>}
+            elseComponent={<ProductCategories categories={productCategories} />}
+          />
         </div>
-        <Cart cartOpen={cartOpen} onTapOutside={this.toggleCartPanel} />
+        <Cart
+          cartOpen={cartOpen}
+          onTapOutside={this.toggleCartVisibility}
+        />
+        <AuthPage
+          authPageOpen={authPageOpen}
+          onTapOutside={this.toggleAuthPageVisibility}
+          onLogin={()=>{}}
+          onSignup={()=>{}}
+        />
       </div>
     );
   }

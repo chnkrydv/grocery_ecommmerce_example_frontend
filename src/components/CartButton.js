@@ -8,8 +8,8 @@ export class CartButton extends Component {
   render() {
     const {count, openCart} = this.props;
     return (
-      <div className="cart_button" onClick={openCart}>
-        CART: {count.toString()} items
+      <div className="cart_button white_button" onClick={openCart}>
+        CART: {count === 0 ? 'empty' : `${count.toString()} items`}
       </div>
     )
   }
