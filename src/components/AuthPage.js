@@ -45,18 +45,6 @@ export class AuthPage extends Component {
             onClickRightTab={() => this.switchPage(false)}
           />
           <div className="auth_form">
-            <IfElse
-              condition={!loginPageSelected}
-              ifComponent={
-                <input
-                  className="textbox"
-                  type="text"
-                  value={name}
-                  onChange={this.updateName}
-                  placeholder="Full name"
-                />
-              }
-            />
             <input
               className="textbox"
               type="text"
@@ -71,15 +59,22 @@ export class AuthPage extends Component {
               onChange={this.updatePasword}
               placeholder="password"
             />
-          </div>
-          <div className="button_bar">
-            <CustomButton
-              text={`Cancel`}
+            <IfElse
+              condition={!loginPageSelected}
+              ifComponent={
+                <input
+                  className="textbox"
+                  type="text"
+                  value={name}
+                  onChange={this.updateName}
+                  placeholder="Full name"
+                />
+              }
             />
-            <CustomButton
-              text={`${loginPageSelected ? 'Login' : 'Signup'}`}
-            />
           </div>
+          <CustomButton
+            text={`${loginPageSelected ? 'Login' : 'Signup'}`}
+          />
         </div>
       </Modal>
     )

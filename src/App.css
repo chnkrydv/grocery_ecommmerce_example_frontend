@@ -16,43 +16,27 @@ body{
   padding-top: 100px;
 }
 
-.modal{
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal_container{
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 1.0;
-  background-color: white;
-  height: 600px;
-  width: 500px;
-}
-
 .hidden{
   display: none;
 }
 
-.buttons_bar{
-  padding: 20px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 20px;
+.textbox{
+  height: 30px;
+  border-radius: 20px;
+  border-color: #444;
+  font-size: 16px;
+  padding: 5px 20px;
+  outline: 0;
 }
 
 .button{
   box-shadow: 1px 1px 10px 1px #eee;
-  padding: 10px 20px;
+  padding: 20px 20px;
   background-color: cornflowerblue;
   color: white;
   border: none;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .white_button{
@@ -60,6 +44,13 @@ body{
   box-shadow: 2px 2px 15px 5px rgba(125, 125, 125, 0.4);
   cursor: pointer;
   color: #444;
+}
+
+.buttons_bar{
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
 }
 
 .tab_switch{
@@ -84,6 +75,26 @@ body{
   color: white;
   border-radius: 5px;
   height: 40px;
+}
+
+.modal{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal_container{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1.0;
+  background-color: white;
+  height: 600px;
+  width: 500px;
 }
 
 .header{
@@ -124,7 +135,7 @@ body{
   height: 500px;
   width: 500px;
   display: grid;
-  grid-template-rows: 1fr 80px;
+  grid-template-rows: 1fr 100px;
 }
 
 .profile{
@@ -158,27 +169,21 @@ body{
 }
 
 .auth_page{
-  padding-top: 100px;
-  height: 500px;
-  width: 500px;
+  padding: 40px;
+  padding-top: 130px;
+  height: 460px;
+  width: 420px;
   display: grid;
+  align-items: flex-start;
+  /* grid-template-rows: 1fr 120px; */
 }
 
 .auth_form{
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
-  padding: 10px 80px;
+  padding: 10px 40px;
   height: 200px;
   align-self: baseline;
-}
-
-.textbox{
-  height: 30px;
-  border-radius: 20px;
-  border-color: #444;
-  font-size: 16px;
-  padding: 5px 20px;
-  outline: 0;
 }
 
 .product_categories{
