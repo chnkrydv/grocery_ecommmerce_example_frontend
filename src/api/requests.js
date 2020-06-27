@@ -1,17 +1,34 @@
 
 
+function apiCall(url, reqOptions, callback, errCallback){
+  fetch(url, reqOptions)
+    .then(res => {
+      // console.log(res.status);
+      return res.json();
+    })
+    .then(json => {
+      // console.log('success', json);
+      callback && callback(json);
+    })
+    .catch(err => {
+      console.log(err);
+      errCallback && errCallback(err);
+    });
+}
+
 function getReq(url, token='', headers={}, callback, errCallback) {
   const optionalTokenHeader = token ? {'x-access-token': token} : {};
-  fetch(url, {
+  const reqOptions = {
     method: 'GET',
     headers: {
       ...optionalTokenHeader,
       ...headers
-    },
-  })
-    .then(res => res.json())
-    .then(json => callback && callback(json))
-    .catch(err => errCallback && errCallback(err));
+    }
+  };
+  // console.log(url);
+  // console.log(reqOptions);
+
+  apiCall(url, reqOptions, callback, errCallback);
 }
 
 function postReq(url, token='', headers={}, body={}, callback, errCallback) {
@@ -26,22 +43,10 @@ function postReq(url, token='', headers={}, body={}, callback, errCallback) {
     headers: finalHeaders,
     body: JSON.stringify(body),
   };
-  console.log(reqOptions);
-  console.log(finalHeaders);
+  // console.log(reqOptions);
+  // console.log(finalHeaders);
 
-  fetch(url, reqOptions)
-    .then(res => {
-      console.log(res.status);
-      return res.json();
-    })
-    .then(json => {
-      console.log('success', json);
-      callback && callback(json);
-    })
-    .catch(err => {
-      console.log(err);
-      errCallback && errCallback(err);
-    });
+  apiCall(url, reqOptions, callback, errCallback);
 }
 
 export {

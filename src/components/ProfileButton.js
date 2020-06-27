@@ -3,7 +3,7 @@ import { abbreviator } from '../utils/stringUtils';
 import IfElse from './IfElse';
 import { signout } from '../api/endpoints';
 
-export class Profile extends Component {
+export class ProfileButton extends Component {
   constructor(props) {
     super(props)
 
@@ -51,7 +51,7 @@ export class Profile extends Component {
               onMouseLeave={() => this.showMenu(false)}
             >
               <h4 style={{height: '20px', marginTop: '0px'}}>{name || 'Logged Out'}</h4>
-              <div className="profile_menu_option">My Profile</div>
+              <div className="profile_menu_option">My ProfileButton</div>
               <div className="profile_menu_option">My Orders</div>
               <div className="profile_menu_option">My Wishlist</div>
               <div className="profile_menu_option" onClick={this.logout}>Logout</div>
@@ -63,4 +63,4 @@ export class Profile extends Component {
   }
 }
 
-export default Profile
+export default ProfileButton

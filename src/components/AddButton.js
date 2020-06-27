@@ -1,6 +1,4 @@
-import React from 'react'
-
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 
 export class AddButton extends Component {
   constructor(props) {
@@ -14,12 +12,12 @@ export class AddButton extends Component {
       <div className="add_button">
         {
           count ?
-            <div>
-              <div onClick={onDecrement}>-</div>
-              <div>{count}</div>
-              <div onClick={onIncrement}>+</div>
-            </div>
-            : <button>Add to cart</button>
+            <Fragment>
+              <div className="add_button_decrement" onClick={onDecrement}>-</div>
+              <div className="add_button_count">{count}</div>
+              <div className="add_button_increment" onClick={onIncrement}>+</div>
+            </Fragment>
+            : <div className="add_button_add" onClick={onIncrement}>Add to cart</div>
         }
       </div>
     )
