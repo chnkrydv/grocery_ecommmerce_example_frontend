@@ -19,7 +19,7 @@ export class Cart extends Component {
   }
 
   render() {
-    const { cartOpen, onTapOutside, onClear, onAdd } = this.props;
+    const { cartOpen, onTapOutside, items, onClear, onAdd } = this.props;
     return (
       <Modal open={cartOpen} onTapOutside={onTapOutside}>
         <Header header="Review Cart Items" large={false}>

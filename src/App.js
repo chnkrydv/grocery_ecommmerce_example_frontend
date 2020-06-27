@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import './App.css';
-import { getProductCategories, getProfile, getCategoryItems } from './api/endpoints';
+import { getProductCategories, getProfile, getCategoryItems, getSpecificItems } from './api/endpoints';
 import ProductCategories from './components/ProductCategories';
 import Header from './components/Header';
 import CartButton from './components/CartButton';
@@ -102,6 +102,13 @@ class App extends Component {
     });
   }
 
+  loadCartItems = (ids) => {
+    getSpecificItems(ids, (response) => {
+      console.log(response);
+      // this.setState({productsInCart: response.requestedItems});
+    });
+  }
+
   cartItemsChange = (productId, count) => {
     const { productsInCart, categoryItems } = this.state;
     const newCart = {...productsInCart};
@@ -112,7 +119,8 @@ class App extends Component {
     });
     
     console.log(newCart)
-    console.log(newCategoryItems)
+    console.log(newCategoryItems);
+    this.loadCartItems(Object.keys(newCart));
 
     this.setState({productsInCart: newCart, categoryItems: newCategoryItems});
   }
@@ -172,6 +180,7 @@ class App extends Component {
         <Cart
           cartOpen={cartOpen}
           onTapOutside={this.toggleCartVisibility}
+          items={productsInCart}
         />
         <AuthPage
           authPageOpen={authPageOpen}

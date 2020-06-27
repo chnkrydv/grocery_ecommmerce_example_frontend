@@ -4,6 +4,7 @@ const loginUrl = `${api}/account/login`;
 const profileUrl = `${api}/account/profile`;
 const ordersUrl = `${api}/account/orders`;
 const productCategoriesUrl = `${api}/products`;
+const specificProductsUrl = `${api}/products/requested`;
 
 const categoryItemsUrl = categoryName => `${productCategoriesUrl}/${categoryName}`;
 
@@ -14,5 +15,6 @@ export {
     profileUrl,
     ordersUrl,
     productCategoriesUrl,
+    specificProductsUrl,
     categoryItemsUrl,
 };
