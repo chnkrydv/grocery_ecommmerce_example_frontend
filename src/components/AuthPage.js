@@ -4,6 +4,8 @@ import { Header } from './Header';
 import TabSwitch from './TabSwitch';
 import IfElse from './IfElse';
 import { CustomButton } from './CustomButton';
+import { signup, signin, signout } from '../api/endpoints';
+import { validUsername } from '../utils/validations';
 
 export class AuthPage extends Component {
   constructor(props) {
@@ -14,6 +16,8 @@ export class AuthPage extends Component {
       name: '',
       username: '',
       password: '',
+      error: '',
+      success: '',
     }
   }
 
@@ -23,12 +27,35 @@ export class AuthPage extends Component {
 
   updateName = ({ target }) => this.setState({ name: target.value });
 
-  updateUsername = ({ target }) => this.setState({ username: target.value });
+  updateUsername = ({ target }) => this.setState({ username: target.value.trim() });
 
-  updatePasword = ({ target }) => this.setState({ password: target.value });
+  updatePasword = ({ target }) => this.setState({ password: target.value.trim() });
+
+  login = () => {
+    const { username, password } = this.state;
+    if(!validUsername(username)) {
+      this.setState({error: 'choose a valid username'});
+      return;
+    }
+    
+    signin(username, password, (user) => {
+      this.props.onLogin(user);
+      this.setState({
+        name: '',
+        username: '',
+        password: '',
+        error: '',
+        success: '',
+      })
+    }, err => {
+      this.setState({
+        error: err,
+      })
+    })
+  }
 
   render() {
-    const { authPageOpen, onTapOutside, onClear, onAdd } = this.props;
+    const { authPageOpen, onTapOutside } = this.props;
     const { loginPageSelected, name, username, password } = this.state;
 
     return (
@@ -74,6 +101,7 @@ export class AuthPage extends Component {
           </div>
           <CustomButton
             text={`${loginPageSelected ? 'Login' : 'Signup'}`}
+            onClick={loginPageSelected ? this.login : this.signup}
           />
         </div>
       </Modal>

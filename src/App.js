@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { ProductCategories } from './components/ProductCategories';
-import { getProductsList } from './api/requests';
+import { getProductsList } from './api/endpoints';
 import { Header } from './components/Header';
 import CartButton from './components/CartButton';
 import Cart from './components/Cart';
@@ -43,6 +43,16 @@ class App extends Component {
     this.setState({ authPageOpen: updatedOpenState });
   }
 
+  onLogin = (profile) => this.setState({
+    profile: profile,
+    authPageOpen: false,
+  });
+
+  onLogout = () => this.setState({
+    profile: {},
+    authPageOpen: false,
+  });
+
   render() {
     const { loading, productCategories, productsInCart, cartOpen, authPageOpen, profile } = this.state;
     return (
@@ -54,11 +64,11 @@ class App extends Component {
               className="grid_right"
               openAuthPage={this.toggleAuthPageVisibility}
               name={profile.name}
+              onLogout={this.onLogout}
             />
           </div>
         </Header>
         <div className="app_container">
-          <h2>Categories</h2>
           <IfElse
             condition={loading}
             ifComponent={<div>loading...</div>}
@@ -72,8 +82,8 @@ class App extends Component {
         <AuthPage
           authPageOpen={authPageOpen}
           onTapOutside={this.toggleAuthPageVisibility}
-          onLogin={()=>{}}
-          onSignup={()=>{}}
+          onLogin={this.onLogin}
+          onSignup={() => { }}
         />
       </div>
     );

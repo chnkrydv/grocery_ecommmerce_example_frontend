@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { abbreviator } from '../utils/stringUtils';
 import IfElse from './IfElse';
+import { signout } from '../api/endpoints';
 
 export class Profile extends Component {
   constructor(props) {
@@ -21,7 +22,11 @@ export class Profile extends Component {
     
     setTimeout(() => this.setState({menuOpen: show}), delay || 0)
   }
-
+  
+  logout = () => {
+    signout();
+    this.props.onLogout();
+  }
 
   render() {
     const { name, className, openAuthPage } = this.props;
@@ -45,11 +50,11 @@ export class Profile extends Component {
               onMouseEnter={() => this.showMenu(true)}
               onMouseLeave={() => this.showMenu(false)}
             >
-              <h4 style={{height: '20px', marginTop: '0px'}}>{name}</h4>
+              <h4 style={{height: '20px', marginTop: '0px'}}>{name || 'Logged Out'}</h4>
               <div className="profile_menu_option">My Profile</div>
               <div className="profile_menu_option">My Orders</div>
               <div className="profile_menu_option">My Wishlist</div>
-              <div className="profile_menu_option">Logout</div>
+              <div className="profile_menu_option" onClick={this.logout}>Logout</div>
             </div>
           }
         />
