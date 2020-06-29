@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import Modal from './Modal';
 import CartItemsList from './CartItemsList';
-import OrderDetails from './OrderDetails';
+import OrderVenue from './OrderVenue';
 import { Header } from './Header';
+import { CustomButton } from './CustomButton';
 
 export class Cart extends Component {
   constructor(props) {
@@ -18,18 +19,59 @@ export class Cart extends Component {
     this.setState({ page: updatedPage });
   }
 
+  getTotalAmount = (items) => {
+    return items.reduce((total, item) => total + (item.totalInCart * item.price), 0);
+  }
+
+  closeModal = () => {
+    this.setState({page: 0});
+    this.props.onTapOutside();
+  }
+
   render() {
-    const { cartOpen, onTapOutside, items, onClear, onAdd } = this.props;
+    const {
+      cartOpen,
+      onTapOutside,
+      items,
+      loading,
+      onItemsCountChange,
+      onClear,
+      profile,
+      onActivateLogin,
+      onAddressUpdate,
+    } = this.props;
+
     return (
-      <Modal open={cartOpen} onTapOutside={onTapOutside}>
+      <Modal open={cartOpen} onTapOutside={this.closeModal}>
         <Header header="Review Cart Items" large={false}>
-          <div className="close_icon white_button" onClick={onTapOutside}>+</div>
+          <div className="close_icon white_button" onClick={this.closeModal}>+</div>
         </Header>
         <div className="cart">
+          <div className="cart_info">
+            <div className="cart_total grid_left">Total: ₹{this.getTotalAmount(items)}</div>
+            <CustomButton
+              text="Clear Cart"
+              onClick={onClear}
+            />
+          </div>
           {
             this.state.page === 0
-              ? <CartItemsList closeModal={onTapOutside} onClear={onTapOutside} onNext={() => this.scroll(true)} />
-              : <OrderDetails closeModal={onTapOutside} onOrderConfirm={onTapOutside} onPrevious={() => this.scroll(false)} />
+              ? <CartItemsList
+                closeModal={this.closeModal}
+                onClear={this.closeModal}
+                onNext={() => this.scroll(true)}
+                items={items}
+                loading={loading}
+                onItemsCountChange={onItemsCountChange}
+              />
+              : <OrderVenue
+                closeModal={this.closeModal}
+                onOrderConfirm={this.closeModal}
+                onPrevious={() => this.scroll(false)}
+                profile={profile}
+                onActivateLogin={onActivateLogin}
+                onAddressUpdate={onAddressUpdate}
+              />
           }
         </div>
       </Modal>

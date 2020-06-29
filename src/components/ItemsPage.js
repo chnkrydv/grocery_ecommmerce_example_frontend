@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import ProductTile from './ProductTile';
 
-export class CategoryItems extends Component {
+export class ItemsPage extends Component {
   render() {
-    const { categoryItems, onItemSelectChange } = this.props;
+    const { productItems, onItemSelectChange } = this.props;
     
     return (
       <div className="category_items">
-        {categoryItems.length && categoryItems.map(item => 
+        {productItems.length && productItems.map(item => 
           <ProductTile
             product={item}
             totalInCart={(item && item.totalInCart) || 0}
@@ -19,4 +19,4 @@ export class CategoryItems extends Component {
   }
 }
 
-export default CategoryItems
+export default ItemsPage

@@ -1,6 +1,15 @@
 import { getToken, setToken, eraseToken } from './token';
 import { getReq, postReq } from './requests';
-import { productCategoriesUrl, loginUrl, signupUrl, profileUrl, ordersUrl, specificProductsUrl, categoryItemsUrl } from './config';
+import {
+  productCategoriesUrl,
+  loginUrl,
+  signupUrl,
+  profileUrl,
+  ordersUrl,
+  specificProductsUrl,
+  categoryItemsUrl,
+  profileAddressUrl
+} from './config';
 
 function signup(name, username, password, callback, errCallback) {
   postReq(signupUrl, '', {}, { name, username, password }, callback, errCallback);
@@ -48,6 +57,11 @@ function getSpecificItems(productIds, callback, errCallback){
   }, callback, errCallback);
 }
 
+function updateAddress(address, callback, errCallback){
+  const token = getToken();
+  postReq(profileAddressUrl, token, {}, {address}, callback, errCallback);
+}
+
 export {
   signup,
   signin,
@@ -57,4 +71,5 @@ export {
   getProductCategories,
   getCategoryItems,
   getSpecificItems,
+  updateAddress,
 };

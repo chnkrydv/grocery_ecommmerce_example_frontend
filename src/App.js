@@ -1,6 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import './App.css';
-import { getProductCategories, getProfile, getCategoryItems, getSpecificItems } from './api/endpoints';
+import {
+  getProductCategories,
+  getProfile,
+  getCategoryItems,
+  getSpecificItems,
+  updateAddress
+} from './api/endpoints';
 import ProductCategories from './components/ProductCategories';
 import Header from './components/Header';
 import CartButton from './components/CartButton';
@@ -8,7 +14,7 @@ import Cart from './components/Cart';
 import IfElse from './components/IfElse';
 import ProfileButton from './components/ProfileButton';
 import AuthPage from './components/AuthPage';
-import CategoryItems from './components/CategoryItems';
+import ItemsPage from './components/ItemsPage';
 import Switch from './components/Switch';
 
 class App extends Component {
@@ -18,11 +24,13 @@ class App extends Component {
     this.state = {
       loading: true,
       cartOpen: false,
+      cartItemsLoading: false,
       authPageOpen: false,
       profile: {},
-      productsInCart: {},
       productCategories: {},
-      categoryItems: [],
+      categoryPageItems: [],
+      cartItems: [],
+      cartItemsIdAndCountMap: {},
       routeIndex: 0,
     }
   }
@@ -37,9 +45,9 @@ class App extends Component {
   reloadApp = () => {
     this.setState({
       routeIndex: 0,
-      categoryItems: [],
+      categoryPageItems: [],
     });
-    console.log(this.state.categoryItems);
+    console.log(this.state.categoryPageItems);
   }
 
   loadProfile = () => {
@@ -58,12 +66,22 @@ class App extends Component {
     authPageOpen: false,
   });
 
+  onAddressUpdate = (address) => {
+    updateAddress(address, () => {
+      this.loadProfile();
+    });
+  }
+
   toggleCartVisibility = () => {
-    const updatedOpenState = !this.state.cartOpen;
-    this.setState({ cartOpen: updatedOpenState });
+    const { cartOpen, cartItemsIdAndCountMap } = this.state;
+    const updatedOpenState = !cartOpen;
+    this.setState({ cartOpen: updatedOpenState, cartItemsLoading: true });
+
+    this.loadCartItems(Object.keys(cartItemsIdAndCountMap).filter(key => cartItemsIdAndCountMap[key] > 0));
   }
 
   toggleAuthPageVisibility = () => {
+    console.log('fired')
     const updatedOpenState = !this.state.authPageOpen;
     this.setState({ authPageOpen: updatedOpenState });
   }
@@ -77,68 +95,89 @@ class App extends Component {
     });
   }
 
-  loadCategoryItems = (categoryName) => {
-    const {productsInCart} = this.state;
-    getCategoryItems(categoryName, (categoryItems) => {
-      const itemsWithCount = categoryItems.map(item => {
-        let itemWithCount = {...item};
-        itemWithCount.totalInCart = 0;
-        Object.keys(productsInCart).forEach(key => {
-          if(key === item.productId){
-            console.log('reached here');
-            itemWithCount.totalInCart = productsInCart[key];
-            console.log(itemWithCount);
-          }
-        });
-        return itemWithCount;
+  getItemsWithCount = (items) => {
+    const {cartItemsIdAndCountMap} = this.state;
+
+    return items.map(item => {
+      let itemWithCount = {...item};
+      itemWithCount.totalInCart = 0;
+      Object.keys(cartItemsIdAndCountMap).forEach(key => {
+        if(key === item.productId){
+          console.log('reached here');
+          itemWithCount.totalInCart = cartItemsIdAndCountMap[key];
+          console.log(itemWithCount);
+        }
       });
+      return itemWithCount;
+    });
+  }
+
+  loadCategoryPageItems = (categoryName) => {
+    getCategoryItems(categoryName, (productItems) => {
+      const itemsWithCount = this.getItemsWithCount(productItems);
       
-      console.log('productsInCart: ', productsInCart);
-      console.log('itemsWithCount: ', itemsWithCount);
       this.setState({
-        categoryItems: itemsWithCount,
+        categoryPageItems: itemsWithCount,
         routeIndex: 1,
       });
     });
   }
 
   loadCartItems = (ids) => {
-    getSpecificItems(ids, (response) => {
-      console.log(response);
-      // this.setState({productsInCart: response.requestedItems});
+    console.log(ids);
+    getSpecificItems(ids, (requestedItems) => {
+      console.log(requestedItems);
+      this.setState({
+        cartItems: this.getItemsWithCount(requestedItems),
+        cartItemsLoading: false,
+      });
     });
   }
 
   cartItemsChange = (productId, count) => {
-    const { productsInCart, categoryItems } = this.state;
-    const newCart = {...productsInCart};
-    newCart[productId] = count;
-    const newCategoryItems = categoryItems.map(item => {
+    console.log('changes')
+    const { cartItemsIdAndCountMap, categoryPageItems, cartItems } = this.state;
+    const newCategoryPageItems = categoryPageItems.map(item => {
       if(item.productId === productId) item.totalInCart = count;
       return item;
     });
-    
-    console.log(newCart)
-    console.log(newCategoryItems);
-    this.loadCartItems(Object.keys(newCart));
+    const newCartItems = cartItems.map(item => {
+      if(item.productId === productId) item.totalInCart = count;
+      return item;
+    });
+    const newCartMap = {...cartItemsIdAndCountMap};
+    newCartMap[productId] = count;
 
-    this.setState({productsInCart: newCart, categoryItems: newCategoryItems});
+    this.setState({
+      categoryPageItems: newCategoryPageItems,
+      cartItems: [...newCartItems],
+      cartItemsIdAndCountMap: newCartMap,
+    });
   }
 
   getCartItemsCount = () => {
-    const {productsInCart} = this.state;
+    const {cartItemsIdAndCountMap} = this.state;
     let count = 0;
-    Object.keys(productsInCart).forEach(key => count += productsInCart[key]);
+    Object.keys(cartItemsIdAndCountMap).forEach(key => count += cartItemsIdAndCountMap[key]);
 
     return count
   }
+
+  clearCart = () => this.setState({
+    routeIndex: 0,
+    cartItems: [],
+    categoryPageItems: [],
+    cartItemsIdAndCountMap: {},
+    cartOpen: false,
+  });
 
   render() {
     const {
       loading,
       productCategories,
-      categoryItems,
-      productsInCart,
+      categoryPageItems,
+      cartItems,
+      cartItemsLoading,
       cartOpen,
       authPageOpen,
       profile,
@@ -149,7 +188,10 @@ class App extends Component {
       <div className="App">
         <Header header="Groceries Mart" onHeaderClick={this.reloadApp}>
           <div className="header_children grid_right">
-            <CartButton count={this.getCartItemsCount()} openCart={this.toggleCartVisibility} />
+            <CartButton
+              count={this.getCartItemsCount()}
+              openCart={this.toggleCartVisibility}
+            />
             <ProfileButton
               className="grid_right"
               openAuthPage={this.toggleAuthPageVisibility}
@@ -167,10 +209,10 @@ class App extends Component {
                 <ProductCategories
                   categories={productCategories}
                   appContentLoading={this.contentLoading}
-                  onCategorySelect={this.loadCategoryItems}
+                  onCategorySelect={this.loadCategoryPageItems}
                 />
-                <CategoryItems
-                  categoryItems={categoryItems}
+                <ItemsPage
+                  productItems={categoryPageItems}
                   onItemSelectChange={this.cartItemsChange}
                 />
               </Switch>
@@ -180,7 +222,13 @@ class App extends Component {
         <Cart
           cartOpen={cartOpen}
           onTapOutside={this.toggleCartVisibility}
-          items={productsInCart}
+          items={cartItems}
+          loading={cartItemsLoading}
+          onItemsCountChange={this.cartItemsChange}
+          onClear={this.clearCart}
+          profile={profile}
+          onActivateLogin={this.toggleAuthPageVisibility}
+          onAddressUpdate={this.onAddressUpdate}
         />
         <AuthPage
           authPageOpen={authPageOpen}

@@ -25,8 +25,6 @@ function getReq(url, token='', headers={}, callback, errCallback) {
       ...headers
     }
   };
-  // console.log(url);
-  // console.log(reqOptions);
 
   apiCall(url, reqOptions, callback, errCallback);
 }
@@ -43,8 +41,6 @@ function postReq(url, token='', headers={}, body={}, callback, errCallback) {
     headers: finalHeaders,
     body: JSON.stringify(body),
   };
-  // console.log(reqOptions);
-  // console.log(finalHeaders);
 
   apiCall(url, reqOptions, callback, errCallback);
 }

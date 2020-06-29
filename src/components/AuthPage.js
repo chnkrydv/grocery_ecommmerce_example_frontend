@@ -4,7 +4,7 @@ import { Header } from './Header';
 import TabSwitch from './TabSwitch';
 import IfElse from './IfElse';
 import { CustomButton } from './CustomButton';
-import { signup, signin, signout } from '../api/endpoints';
+import { signup, signin } from '../api/endpoints';
 import { validUsername } from '../utils/validations';
 
 export class AuthPage extends Component {
