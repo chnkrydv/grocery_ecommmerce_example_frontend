@@ -16,14 +16,14 @@ export class ProductCategories extends Component {
       <div>
         <h2>Categories</h2>
         <div className="product_categories">
-          {Object.keys(categories).map((item, i) => (
+          {Object.keys(categories).map((product, i) => (
             <CategoryCard
               key={i}
               className={`${i % 2 === 1 ? 'grid_left' : 'grid_right'}`}
-              name={categories[item]['name']}
-              totalProducts={categories[item]['products']}
-              imageSource={`${api}${categories[item]['imageSource']}`}
-              onClick={() => this.loadCategory(categories[item]['name'])}
+              name={categories[product]['type']}
+              totalProducts={categories[product]['items']}
+              imageSource={`${api}${categories[product]['imageSource']}`}
+              onClick={() => this.loadCategory(categories[product]['type'])}
             />
           ))}
         </div>

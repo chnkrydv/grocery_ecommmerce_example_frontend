@@ -45,7 +45,7 @@ export class OrderVenue extends Component {
         </div>
         <div className="buttons_bar">
           <button className="button" onClick={onPrevious}>Go back</button>
-          <button className="button" onClick={onOrderConfirm}>Confirm address and delivery</button>
+          <button className="button" onClick={onOrderConfirm}>Confirm & Place Order</button>
         </div>
       </Fragment>
     );

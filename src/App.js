@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import './App.css';
 import {
-  getProductCategories,
+  getProductsCatalog,
   getProfile,
   getCategoryItems,
   getSpecificItems,
-  updateAddress
+  updateAddress,
+  placeOrder
 } from './api/endpoints';
 import ProductCategories from './components/ProductCategories';
 import Header from './components/Header';
@@ -47,7 +48,6 @@ class App extends Component {
       routeIndex: 0,
       categoryPageItems: [],
     });
-    console.log(this.state.categoryPageItems);
   }
 
   loadProfile = () => {
@@ -81,13 +81,12 @@ class App extends Component {
   }
 
   toggleAuthPageVisibility = () => {
-    console.log('fired')
     const updatedOpenState = !this.state.authPageOpen;
     this.setState({ authPageOpen: updatedOpenState });
   }
 
   loadProductCategories = () => {
-    getProductCategories((productCategories) => {
+    getProductsCatalog((productCategories) => {
       this.setState({
         productCategories: productCategories,
         loading: false,
@@ -95,17 +94,15 @@ class App extends Component {
     });
   }
 
-  getItemsWithCount = (items) => {
+  getItemsWithCount = (categoryItems) => {
     const {cartItemsIdAndCountMap} = this.state;
 
-    return items.map(item => {
+    return categoryItems.map(item => {
       let itemWithCount = {...item};
       itemWithCount.totalInCart = 0;
       Object.keys(cartItemsIdAndCountMap).forEach(key => {
         if(key === item.productId){
-          console.log('reached here');
           itemWithCount.totalInCart = cartItemsIdAndCountMap[key];
-          console.log(itemWithCount);
         }
       });
       return itemWithCount;
@@ -113,8 +110,8 @@ class App extends Component {
   }
 
   loadCategoryPageItems = (categoryName) => {
-    getCategoryItems(categoryName, (productItems) => {
-      const itemsWithCount = this.getItemsWithCount(productItems);
+    getCategoryItems(categoryName, (categoryWithItems) => {
+      const itemsWithCount = this.getItemsWithCount(categoryWithItems.items);
       
       this.setState({
         categoryPageItems: itemsWithCount,
@@ -124,9 +121,7 @@ class App extends Component {
   }
 
   loadCartItems = (ids) => {
-    console.log(ids);
     getSpecificItems(ids, (requestedItems) => {
-      console.log(requestedItems);
       this.setState({
         cartItems: this.getItemsWithCount(requestedItems),
         cartItemsLoading: false,
@@ -135,7 +130,6 @@ class App extends Component {
   }
 
   cartItemsChange = (productId, count) => {
-    console.log('changes')
     const { cartItemsIdAndCountMap, categoryPageItems, cartItems } = this.state;
     const newCategoryPageItems = categoryPageItems.map(item => {
       if(item.productId === productId) item.totalInCart = count;
@@ -161,6 +155,16 @@ class App extends Component {
     Object.keys(cartItemsIdAndCountMap).forEach(key => count += cartItemsIdAndCountMap[key]);
 
     return count
+  }
+
+  placeOrder = () => {
+    const { cartItems } = this.state;
+    const requestItems = cartItems.map(({productId, totalInCart}) => ({productId, requested: totalInCart}));
+    console.log(requestItems);
+    placeOrder(requestItems, (response) => {
+      console.log(response);
+      this.clearCart();
+    });
   }
 
   clearCart = () => this.setState({
@@ -229,6 +233,7 @@ class App extends Component {
           profile={profile}
           onActivateLogin={this.toggleAuthPageVisibility}
           onAddressUpdate={this.onAddressUpdate}
+          placeOrder={this.placeOrder}
         />
         <AuthPage
           authPageOpen={authPageOpen}

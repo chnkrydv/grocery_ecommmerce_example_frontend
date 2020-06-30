@@ -4,10 +4,11 @@ const loginUrl = `${api}/account/login`;
 const profileUrl = `${api}/account/profile`;
 const profileAddressUrl = `${api}/account/profile/address`;
 const ordersUrl = `${api}/account/orders`;
-const productCategoriesUrl = `${api}/products`;
-const specificProductsUrl = `${api}/products/requested`;
+const createOrderUrl = `${api}/account/order`;
+const productsCatalogUrl = `${api}/products/catalog`;
+const specificProductsUrl = `${api}/products/ids`;
 
-const categoryItemsUrl = categoryName => `${productCategoriesUrl}/${categoryName}`;
+const categoryItemsUrl = categoryName => `${productsCatalogUrl}/${categoryName}`;
 
 export {
     api,
@@ -16,7 +17,8 @@ export {
     profileUrl,
     profileAddressUrl,
     ordersUrl,
-    productCategoriesUrl,
+    createOrderUrl,
+    productsCatalogUrl,
     specificProductsUrl,
     categoryItemsUrl,
 };

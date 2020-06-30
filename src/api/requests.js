@@ -3,11 +3,11 @@
 function apiCall(url, reqOptions, callback, errCallback){
   fetch(url, reqOptions)
     .then(res => {
-      // console.log(res.status);
-      return res.json();
+      console.log(res.status);
+      return res.json({someData: 3});
     })
     .then(json => {
-      // console.log('success', json);
+      console.log('json: ', json);
       callback && callback(json);
     })
     .catch(err => {

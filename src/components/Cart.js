@@ -28,6 +28,11 @@ export class Cart extends Component {
     this.props.onTapOutside();
   }
 
+  placeOrder = () => {
+    this.props.placeOrder();
+    this.closeModal()
+  }
+
   render() {
     const {
       cartOpen,
@@ -66,7 +71,7 @@ export class Cart extends Component {
               />
               : <OrderVenue
                 closeModal={this.closeModal}
-                onOrderConfirm={this.closeModal}
+                onOrderConfirm={this.placeOrder}
                 onPrevious={() => this.scroll(false)}
                 profile={profile}
                 onActivateLogin={onActivateLogin}

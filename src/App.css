@@ -128,16 +128,21 @@ body{
 .header{
   background-color: cornflowerblue;
   color: white;
-  height: 40px;
+  height: 80px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.header_bounded{
+  margin: auto;
+  max-width: 1020px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-content: space-between;
   line-height: 40px;
   padding: 20px 40px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
 }
 
 .header_content{

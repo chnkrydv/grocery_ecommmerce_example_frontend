@@ -21,7 +21,7 @@ export class CartItemsList extends Component {
         </div>
         <div className="buttons_bar">
           <button className="button" onClick={onClear}>Close</button>
-          <button className="button" onClick={onNext}>Proceed To Order Details</button>
+          <button className="button" onClick={onNext}>Proceed To Address & Delivery Time</button>
         </div>
       </Fragment>
     );

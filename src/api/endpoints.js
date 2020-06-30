@@ -1,11 +1,12 @@
 import { getToken, setToken, eraseToken } from './token';
 import { getReq, postReq } from './requests';
 import {
-  productCategoriesUrl,
+  productsCatalogUrl,
   loginUrl,
   signupUrl,
   profileUrl,
   ordersUrl,
+  createOrderUrl,
   specificProductsUrl,
   categoryItemsUrl,
   profileAddressUrl
@@ -43,8 +44,13 @@ function getOrders(callback, errCallback) {
   getReq(ordersUrl, token, {}, callback, errCallback);
 }
 
-function getProductCategories(callback, errCallback) {
-  getReq(productCategoriesUrl, '', {}, callback, errCallback);
+function placeOrder(itemsListWithCount, callback, errCallback){
+  const token = getToken();
+  postReq(createOrderUrl, token, {}, {itemsList: itemsListWithCount}, callback, errCallback);
+}
+
+function getProductsCatalog(callback, errCallback) {
+  getReq(productsCatalogUrl, '', {}, callback, errCallback);
 }
 
 function getCategoryItems(categoryName, callback, errCallback){
@@ -68,7 +74,8 @@ export {
   signout,
   getProfile,
   getOrders,
-  getProductCategories,
+  placeOrder,
+  getProductsCatalog,
   getCategoryItems,
   getSpecificItems,
   updateAddress,
