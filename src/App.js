@@ -17,6 +17,7 @@ import ProfileButton from './components/ProfileButton';
 import AuthPage from './components/AuthPage';
 import ItemsPage from './components/ItemsPage';
 import Switch from './components/Switch';
+import MessageBar from './components/MessageBar';
 
 class App extends Component {
   constructor(props) {
@@ -33,6 +34,11 @@ class App extends Component {
       cartItems: [],
       cartItemsIdAndCountMap: {},
       routeIndex: 0,
+      alert: {
+        visible: false,
+        message: '',
+        isWarning: true
+      }
     }
   }
 
@@ -40,6 +46,13 @@ class App extends Component {
     this.loadProfile();
     this.loadProductCategories();
   }
+
+  onAlert = (message, isWarning=true) => {
+    this.setState({alert: {message, isWarning, visible: true}});
+    setTimeout(this.closeAlert, 4000)
+  }
+  
+  closeAlert = () => this.setState({alert: {visible: false}})
 
   contentLoading = (loading) => this.setState({ loading });
 
@@ -53,7 +66,7 @@ class App extends Component {
   loadProfile = () => {
     getProfile((profile) => {
       this.setState({ profile });
-    });
+    }, this.onAlert);
   }
 
   onLogin = (profile) => this.setState({
@@ -69,7 +82,7 @@ class App extends Component {
   onAddressUpdate = (address) => {
     updateAddress(address, () => {
       this.loadProfile();
-    });
+    }, this.onAlert);
   }
 
   toggleCartVisibility = () => {
@@ -91,7 +104,7 @@ class App extends Component {
         productCategories: productCategories,
         loading: false,
       })
-    });
+    }, this.onAlert);
   }
 
   getItemsWithCount = (categoryItems) => {
@@ -117,7 +130,7 @@ class App extends Component {
         categoryPageItems: itemsWithCount,
         routeIndex: 1,
       });
-    });
+    }, this.onAlert);
   }
 
   loadCartItems = (ids) => {
@@ -126,7 +139,7 @@ class App extends Component {
         cartItems: this.getItemsWithCount(requestedItems),
         cartItemsLoading: false,
       });
-    });
+    }, this.onAlert);
   }
 
   cartItemsChange = (productId, count) => {
@@ -164,7 +177,7 @@ class App extends Component {
     placeOrder(requestItems, (response) => {
       console.log(response);
       this.clearCart();
-    });
+    }, this.onAlert);
   }
 
   clearCart = () => this.setState({
@@ -186,6 +199,7 @@ class App extends Component {
       authPageOpen,
       profile,
       routeIndex,
+      alert,
     } = this.state;
 
     return (
@@ -234,12 +248,20 @@ class App extends Component {
           onActivateLogin={this.toggleAuthPageVisibility}
           onAddressUpdate={this.onAddressUpdate}
           placeOrder={this.placeOrder}
+          onAlert={this.onAlert}
         />
         <AuthPage
           authPageOpen={authPageOpen}
           onTapOutside={this.toggleAuthPageVisibility}
           onLogin={this.onLogin}
           onSignup={() => { }}
+          onAlert={this.onAlert}
+        />
+        <MessageBar
+          visible={alert.visible}
+          message={alert.message || 'some message'}
+          isWarning={alert.isWarning}
+          onClose={this.closeAlert}
         />
       </div>
     );

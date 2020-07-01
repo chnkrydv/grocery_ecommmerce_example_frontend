@@ -16,8 +16,6 @@ export class AuthPage extends Component {
       name: '',
       username: '',
       password: '',
-      error: '',
-      success: '',
     }
   }
 
@@ -47,11 +45,7 @@ export class AuthPage extends Component {
         error: '',
         success: '',
       })
-    }, err => {
-      this.setState({
-        error: err,
-      })
-    })
+    }, this.props.onAlert);
   }
 
   render() {

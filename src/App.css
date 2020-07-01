@@ -45,6 +45,7 @@ body{
   box-shadow: 2px 2px 15px 5px rgba(125, 125, 125, 0.4);
   cursor: pointer;
   color: #444;
+  border-radius: 40px;
 }
 
 .add_button{
@@ -123,6 +124,28 @@ body{
   background-color: white;
   height: 700px;
   width: 700px;
+}
+
+.message_bar_container{
+  position: fixed;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+}
+
+.message_bar{
+  margin: auto;
+  padding: 16px;
+  max-width: 600px;
+  display: grid;
+  grid-template-columns: 1fr 44px;
+  column-gap: 20px;
+  border: 2px solid #666;
+  align-items: center;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 40;
+  color: #666;
 }
 
 .header{
@@ -333,8 +356,7 @@ body{
 }
 
 .close_icon{
-  padding: 6px 13px;
-  border-radius: 30px;
+  padding: 6px 12px;
   transform: rotateZ(45deg);
   font-size: 32px;
   line-height: 32px;
@@ -366,4 +388,16 @@ body{
 
 .light_text{
   color: white;
+}
+
+.warning_bg{
+  background-color: #fee;
+}
+
+.success_bg{
+  background-color: #efe;
+}
+
+.hidden{
+  display: none;
 }

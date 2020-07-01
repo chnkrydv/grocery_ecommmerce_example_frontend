@@ -4,6 +4,7 @@ import CartItemsList from './CartItemsList';
 import OrderVenue from './OrderVenue';
 import { Header } from './Header';
 import { CustomButton } from './CustomButton';
+import CloseButton from './CloseButton';
 
 export class Cart extends Component {
   constructor(props) {
@@ -49,7 +50,7 @@ export class Cart extends Component {
     return (
       <Modal open={cartOpen} onTapOutside={this.closeModal}>
         <Header header="Review Cart Items" large={false}>
-          <div className="close_icon white_button" onClick={this.closeModal}>+</div>
+          <CloseButton onClick={this.closeModal}/>
         </Header>
         <div className="cart">
           <div className="cart_info">

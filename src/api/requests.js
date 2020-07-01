@@ -3,16 +3,18 @@
 function apiCall(url, reqOptions, callback, errCallback){
   fetch(url, reqOptions)
     .then(res => {
-      console.log(res.status);
-      return res.json({someData: 3});
+      if(res.status === 200) return res.json();
+      else throw res.json();
     })
     .then(json => {
       console.log('json: ', json);
       callback && callback(json);
     })
     .catch(err => {
-      console.log(err);
-      errCallback && errCallback(err);
+      err.then(error => {
+        console.log(error);
+        errCallback && errCallback(error.message);
+      });
     });
 }
 
